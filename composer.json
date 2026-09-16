@@ -1,0 +1,10 @@
+{
+    "require": {
+        "nesbot/carbon": "^3.13"
+    },
+    "config": {
+        "platform": {
+            "php": "8.2.0"
+        }
+    }
+}

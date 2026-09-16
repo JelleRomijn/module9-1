@@ -1,0 +1,802 @@
+/* =========================================================
+   YouTube-stijl reactiesectie
+   ========================================================= */
+
+:root {
+  --bg:            #0f0f0f;
+  --bg-elevated:   #1f1f1f;
+  --surface:       #272727;
+  --surface-hover: #3f3f3f;
+  --text:          #f1f1f1;
+  --text-dim:      #aaaaaa;
+  --border:        #303030;
+  --blue:          #3ea6ff;
+  --blue-soft:     #263850;
+  --red:           #ff0000;
+  --radius:        18px;
+}
+
+* { box-sizing: border-box; }
+
+/* Verbergen met het hidden-attribuut moet altijd winnen van een display-regel
+   uit een class (anders blijft bijvoorbeeld de emoji-picker in beeld staan). */
+[hidden] { display: none !important; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Roboto", "Helvetica Neue", Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+svg { fill: currentColor; }
+
+a { color: inherit; text-decoration: none; }
+
+/* ---------------------------------------------------------
+   Topbar
+   --------------------------------------------------------- */
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: 56px;
+  padding: 0 16px;
+  background: var(--bg);
+}
+
+.topbar__left,
+.topbar__right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+}
+
+.topbar__center {
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: center;
+  max-width: 640px;
+}
+
+.icon-btn {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: var(--text);
+  transition: background 0.15s;
+}
+
+.icon-btn:hover { background: var(--surface); }
+.icon-btn svg { width: 24px; height: 24px; }
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.logo__mark { width: 32px; height: 24px; }
+
+.logo__text {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -1px;
+}
+
+.logo__text sup {
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+.search {
+  display: flex;
+  width: 100%;
+}
+
+.search__input {
+  flex: 1;
+  height: 40px;
+  padding: 0 16px;
+  border: 1px solid var(--border);
+  border-right: none;
+  border-radius: 20px 0 0 20px;
+  background: #121212;
+  color: var(--text);
+  font-size: 16px;
+  outline: none;
+}
+
+.search__input:focus { border-color: var(--blue); }
+.search__input::placeholder { color: #888; }
+
+.search__btn {
+  width: 64px;
+  height: 40px;
+  border: 1px solid var(--border);
+  border-radius: 0 20px 20px 0;
+  background: var(--surface);
+  color: var(--text);
+}
+
+.search__btn:hover { background: var(--surface-hover); }
+.search__btn svg { width: 22px; height: 22px; }
+
+/* ---------------------------------------------------------
+   Avatars
+   --------------------------------------------------------- */
+
+.avatar {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #606060;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  text-transform: uppercase;
+  user-select: none;
+}
+
+.avatar--me      { background: #3f51b5; }
+.avatar--channel { background: #c2185b; }
+
+.avatar--sm { width: 24px; height: 24px; font-size: 11px; }
+
+/* ---------------------------------------------------------
+   Pagina / video
+   --------------------------------------------------------- */
+
+.page {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 24px 16px 80px;
+}
+
+.player {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #000;
+}
+
+.player iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.video-title {
+  margin: 12px 0 0;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.video-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.channel {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.channel__info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.3;
+}
+
+.channel__name {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.verified {
+  width: 14px;
+  height: 14px;
+  color: var(--text-dim);
+}
+
+.channel__subs {
+  color: var(--text-dim);
+  font-size: 12px;
+}
+
+.video-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Knoppen */
+
+.btn {
+  height: 36px;
+  padding: 0 16px;
+  border-radius: var(--radius);
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s;
+}
+
+.btn--subscribe {
+  background: var(--text);
+  color: #0f0f0f;
+}
+
+.btn--subscribe:hover { background: #d9d9d9; }
+
+.btn--subscribe.is-subscribed {
+  background: var(--surface);
+  color: var(--text);
+}
+
+.btn--subscribe.is-subscribed:hover { background: var(--surface-hover); }
+
+.btn--primary {
+  background: var(--blue);
+  color: #0f0f0f;
+}
+
+.btn--primary:hover:not(:disabled) { background: #65b8ff; }
+
+.btn--primary:disabled {
+  background: var(--surface);
+  color: #717171;
+  cursor: default;
+}
+
+.btn--ghost { border-radius: var(--radius); }
+.btn--ghost:hover { background: var(--surface); }
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 16px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  font-weight: 500;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+
+.pill:hover { background: var(--surface-hover); }
+.pill svg { width: 22px; height: 22px; }
+
+.pill--icon { padding: 0 10px; }
+
+.pill--split {
+  gap: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.pill--split:hover { background: var(--surface); }
+
+.pill__part {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 14px;
+  font-weight: 500;
+  transition: background 0.15s;
+}
+
+.pill__part:hover { background: var(--surface-hover); }
+.pill__part svg { width: 22px; height: 22px; }
+.pill__part.is-active { color: var(--blue); }
+
+.pill__divider {
+  width: 1px;
+  height: 24px;
+  background: #545454;
+}
+
+/* ---------------------------------------------------------
+   Reacties
+   --------------------------------------------------------- */
+
+.comments {
+  margin-top: 32px;
+}
+
+.comments__head {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  margin-bottom: 24px;
+}
+
+.comments__count {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.sort { position: relative; }
+
+.sort__btn {
+  display: inline-flex;
+  cursor: pointer;
+  list-style: none;
+  align-items: center;
+  gap: 8px;
+  height: 36px;
+  padding: 0 8px;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.sort__btn::-webkit-details-marker { display: none; }
+.sort__btn:hover { background: var(--surface); }
+.sort__btn svg { width: 24px; height: 24px; }
+
+.sort__menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 20;
+  min-width: 180px;
+  padding: 8px 0;
+  border-radius: 12px;
+  background: var(--bg-elevated);
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.5);
+}
+
+.sort__option {
+  display: block;
+  width: 100%;
+  text-decoration: none;
+  padding: 10px 16px;
+  text-align: left;
+  font-size: 14px;
+}
+
+.sort__option:hover { background: var(--surface); }
+.sort__option.is-active { font-weight: 500; background: rgba(255, 255, 255, 0.05); }
+
+/* Reactie plaatsen */
+
+.composer {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.composer__body { flex: 1; min-width: 0; }
+
+/* Naamveld - de database weet niet wie je bent, dus vul je hem zelf in */
+.composer__name {
+  display: block;
+  width: 220px;
+  max-width: 100%;
+  margin-bottom: 10px;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #121212;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 13px;
+  outline: none;
+}
+
+.composer__name:focus { border-color: var(--blue); }
+.composer__name::placeholder { color: var(--text-dim); }
+
+.composer__field {
+  position: relative;
+  padding-bottom: 1px;
+}
+
+.composer__input {
+  display: block;
+  width: 100%;
+  min-height: 24px;
+  padding: 0 0 6px;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 20px;
+  resize: none;
+  overflow: hidden;
+  outline: none;
+}
+
+.composer__input::placeholder { color: var(--text-dim); }
+
+/* Onderstreping die uitklapt bij focus (zoals YouTube) */
+.composer__field::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--text);
+  transform: scaleX(0);
+  transition: transform 0.2s ease;
+}
+
+.composer__field:focus-within::after { transform: scaleX(1); }
+
+.composer__actions {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.composer__counter {
+  margin-left: auto;
+  color: var(--text-dim);
+  font-size: 12px;
+}
+
+.composer__counter.is-max { color: #ff8a80; }
+
+.emoji-btn {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: var(--text);
+}
+
+.emoji-btn:hover { background: var(--surface); }
+.emoji-btn svg { width: 24px; height: 24px; }
+
+/* Klapt onder de emoji-knop uit, zodat hij de video niet bedekt */
+.emoji-picker {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 30;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  width: 260px;
+  padding: 8px;
+  border-radius: 12px;
+  background: var(--bg-elevated);
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.5);
+}
+
+.emoji-picker button {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.emoji-picker button:hover { background: var(--surface); }
+
+/* Reactielijst */
+
+.comment-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.comment {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.comment__body { flex: 1; min-width: 0; }
+
+.comment__head {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 2px;
+}
+
+.comment__author {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.comment__author--me {
+  color: var(--blue);
+}
+
+.comment__time {
+  color: var(--text-dim);
+  font-size: 12px;
+}
+
+.comment__text {
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.comment__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+  margin-left: -8px;
+}
+
+.action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 8px;
+  border-radius: 16px;
+  color: var(--text-dim);
+  font-size: 12px;
+  font-weight: 500;
+  transition: background 0.15s, color 0.15s;
+}
+
+.action:hover { background: var(--surface); }
+.action svg { width: 18px; height: 18px; }
+.action.is-active { color: var(--blue); }
+
+.action--reply {
+  padding: 0 12px;
+  color: var(--text);
+}
+
+.action--delete:hover { color: #ff8a80; }
+
+.action__count { min-width: 6px; }
+
+/* Antwoorden */
+
+.replies-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  margin-top: 4px;
+  margin-left: -8px;
+  padding: 0 12px;
+  border-radius: 16px;
+  color: var(--blue);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.replies-toggle:hover { background: var(--blue-soft); }
+.replies-toggle svg { width: 20px; height: 20px; transition: transform 0.2s; }
+.replies-toggle.is-open svg { transform: rotate(180deg); }
+
+.replies {
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.replies .comment { gap: 12px; }
+.replies .avatar { width: 24px; height: 24px; font-size: 11px; }
+
+/* Antwoordveld */
+
+/* Het antwoordformulier: hetzelfde formulier, maar compacter */
+.composer--antwoord {
+  gap: 12px;
+  margin: 12px 0 0;
+}
+
+.composer--antwoord .composer__actions { display: flex; }
+
+/* Laden / leeg / foutmelding */
+
+.comments__state {
+  padding: 24px 0;
+  color: var(--text-dim);
+  text-align: center;
+}
+
+.comments__state--error {
+  padding: 20px;
+  border: 1px solid #5c2b2b;
+  border-radius: 12px;
+  background: #2a1a1a;
+  color: #ffb4ab;
+}
+
+.comments__state--error p {
+  margin: 0 0 12px;
+  overflow-wrap: anywhere;
+}
+
+/* ---------------------------------------------------------
+   Toast
+   --------------------------------------------------------- */
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  z-index: 100;
+  padding: 12px 20px;
+  border-radius: 8px;
+  background: var(--bg-elevated);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.6);
+  font-size: 14px;
+  opacity: 0;
+  transform: translate(-50%, 16px);
+  pointer-events: none;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.toast.is-visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/* Nieuw geplaatste reactie kort laten oplichten */
+@keyframes flash {
+  from { background: rgba(62, 166, 255, 0.14); }
+  to   { background: transparent; }
+}
+
+.comment:target {
+  border-radius: 8px;
+  animation: flash 1.6s ease-out;
+}
+
+/* ---------------------------------------------------------
+   Responsive
+   --------------------------------------------------------- */
+
+@media (max-width: 700px) {
+  .topbar__center { display: none; }
+  .video-title { font-size: 18px; }
+  .comments__head { gap: 16px; }
+  .video-actions { width: 100%; overflow-x: auto; }
+}
+
+@media (max-width: 480px) {
+  .page { padding: 16px 12px 64px; }
+  .comment { gap: 12px; }
+  .comment > .avatar { width: 32px; height: 32px; font-size: 14px; }
+  .composer > .avatar { width: 32px; height: 32px; font-size: 14px; }
+  .emoji-picker { width: 216px; }
+}
+
+/* ---------------------------------------------------------
+   Formuliervelden (naam en e-mail)
+   --------------------------------------------------------- */
+
+.composer__rij {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.veld {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1 1 200px;
+  min-width: 0;
+}
+
+.veld__label {
+  color: var(--text-dim);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.veld__uitleg { font-weight: 400; }
+
+.veld__input {
+  height: 36px;
+  padding: 0 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #121212;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+}
+
+.veld__input:focus { border-color: var(--blue); }
+.veld__input::placeholder { color: #6f6f6f; }
+
+/* Een veld met een fout krijgt een rode rand */
+.veld__input.is-fout,
+.composer__input.is-fout { border-color: #ff5449; }
+
+.composer__input.is-fout { border-bottom: 2px solid #ff5449; }
+
+.veld__fout {
+  display: block;
+  margin-top: 2px;
+  color: #ff8a80;
+  font-size: 12px;
+}
+
+.melding {
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.melding--fout {
+  border: 1px solid #5c2b2b;
+  background: #2a1a1a;
+  color: #ffb4ab;
+}
+
+/* ---------------------------------------------------------
+   Like-knop en antwoorden
+   --------------------------------------------------------- */
+
+/* De like-knop zit in een eigen formulier; dat mag geen ruimte innemen. */
+.like-form { display: inline-flex; margin: 0; }
+
+.replies-count {
+  margin: 8px 0 0;
+  color: var(--blue);
+  font-size: 13px;
+  font-weight: 500;
+}

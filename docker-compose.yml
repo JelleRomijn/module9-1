@@ -1,0 +1,66 @@
+# Draait de site (PHP) en MySQL in één keer:
+#
+#   docker compose up -d
+#
+# Site:        http://localhost:8090
+# phpMyAdmin:  http://localhost:8091   (gebruiker root, wachtwoord root)
+# Stoppen:     docker compose down      (met -v ook de database leeggooien)
+#
+# Poorten 8080/8081/3307 zijn hier bewust niet gebruikt: die zijn van het
+# portfolio-project, zodat beide projecten tegelijk kunnen draaien.
+
+services:
+  # De site zelf: Apache met PHP 8.3
+  web:
+    image: php:8.3-apache
+    restart: unless-stopped
+    ports:
+      - "8090:80"
+    volumes:
+      - .:/var/www/html
+    environment:
+      DB_HOST: db
+      DB_PORT: "3306"
+      DB_NAME: youtube_comments
+      DB_USER: root
+      DB_PASS: root
+    depends_on:
+      db:
+        condition: service_healthy
+    # pdo_mysql zit niet standaard in de php-image, dus die installeren we bij het starten.
+    command: bash -c "docker-php-ext-install pdo_mysql >/dev/null 2>&1; apache2-foreground"
+
+  # De MySQL-database
+  db:
+    image: mysql:8.4
+    restart: unless-stopped
+    ports:
+      - "3399:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: youtube_comments
+    volumes:
+      - dbdata:/var/lib/mysql
+      - ./database.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  # phpMyAdmin om in de database te kijken -> http://localhost:8091
+  phpmyadmin:
+    image: phpmyadmin:5
+    restart: unless-stopped
+    ports:
+      - "8091:80"
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: root
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  dbdata:
